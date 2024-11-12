@@ -28,20 +28,19 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+app.use((req, res, next) => {
+  if (req.path.endsWith('.js')) {
+    res.setHeader('Content-Type', 'application/javascript');
+  }
+  next();
 });
 
-app.use(express.static(path.join(__dirname, '../../client/dist/index.html')));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+});
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../client/dist/index.html')));
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
-  });
-}
 
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 const server = new ApolloServer<Context>({
   typeDefs,
