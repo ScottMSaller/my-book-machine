@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import path from 'node:path';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import typeDefs from './graphql/schema.js';
@@ -16,16 +17,18 @@ interface Context {
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Enable CORS for the frontend origin
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000', // Change to your client URL
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
   credentials: true,
 }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Catchall handler for React routes (only for non-API routes)
+
+
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
