@@ -31,11 +31,11 @@ app.use(express.json());
 
 
 // Serve static files from the client/dist folder
-app.use(express.static(path.resolve(__dirname, '../client/dist')));
+app.use(express.static(path.resolve(__dirname, '../../client/dist')));
 
 // Catch-all route to serve index.html for non-asset requests (React Router)
 app.get('*', (_req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'));
 });
 
 
