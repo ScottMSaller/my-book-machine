@@ -28,19 +28,13 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Serve static files from the client/dist folder
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
+// Catch-all route to serve index.html for non-asset requests (for React Router)
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
-
-app.use(express.static(path.join(__dirname, '../../client/dist/index.html')));
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../client/dist/index.html')));
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
-  });
-}
 
 
 const server = new ApolloServer<Context>({
