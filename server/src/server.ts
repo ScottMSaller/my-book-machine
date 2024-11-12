@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Catchall handler for React routes (only for non-API routes)
-app.get('*', (req, res) => {
+app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 if (process.env.NODE_ENV === 'production') {
